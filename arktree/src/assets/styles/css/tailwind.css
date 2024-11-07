@@ -1,0 +1,27 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definindo estilos globais personalizados */
+@layer base {
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1a202c; 
+    color: #edf2f7; 
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+
+  /* Personalizando links */
+  a {
+    color: #38b2ac; 
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline; 
+  }
+}

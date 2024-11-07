@@ -8,27 +8,37 @@
 
     <!-- Seus Componentes -->
     <div v-else>
-      <div class="welcome">
+      <div v-if="showWelcome" class="welcome">
         <AppWelcome></AppWelcome>
       </div>
+
+      <div class="description" ref="description">
+        <AppDescription v-if="!showWelcome"></AppDescription>
+      </div>
+
       <AppBackground></AppBackground>
     </div>
   </div>
 </template>
 
+
 <script>
 import AppBackground from '../components/AppBackground.vue';
-import AppWelcome from '../components/AppWelcome.vue';
+import AppWelcome from '../components/titles/AppWelcome.vue';
+import AppDescription from '../components/titles/AppDescription.vue';
 
 export default {
   name: 'App',
   components: {
     AppBackground,
-    AppWelcome
+    AppWelcome,
+    AppDescription
   },
   data() {
     return {
-      isLoading: true // Variável de controle do spinner
+      isLoading: true, // Variável de controle do spinner
+      showWelcome: true, // Controle de exibição do AppWelcome
+      lastScrollY: 0, // Para armazenar a última posição do scroll
     };
   },
   mounted() {
@@ -36,13 +46,52 @@ export default {
     setTimeout(() => {
       this.isLoading = false; // Esconde o spinner após o tempo de carregamento
     }, 2000); // 2 segundos para o exemplo, ajuste conforme necessário
+
+    // Adiciona o evento de scroll
+    window.addEventListener("wheel", this.handleScroll);
+  },
+  beforeUnmount() {
+    // Remove o evento de scroll ao destruir o componente
+    window.removeEventListener("wheel", this.handleScroll);
+  },
+  methods: {
+    handleScroll(event) {
+      // Detecta a direção do scroll (deltaY positivo é para baixo)
+      if (event.deltaY > 0) {
+        // Rolou para baixo, navega para a descrição e desativa o AppWelcome
+        this.scrollToDescription();
+        this.showWelcome = false; // Desativa o AppWelcome
+      } else {
+        // Rolou para cima, retorna para o AppWelcome
+        this.scrollToWelcome();
+        this.showWelcome = true; // Ativa o AppWelcome
+      }
+    },
+    scrollToDescription() {
+      // Garante que a referência esteja acessível após o DOM ser atualizado
+      this.$nextTick(() => {
+        const descriptionElement = this.$refs.description;
+        if (descriptionElement) {
+          descriptionElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    },
+    scrollToWelcome() {
+      // Garante que a referência esteja acessível após o DOM ser atualizado
+      this.$nextTick(() => {
+        const welcomeElement = this.$el.querySelector('.welcome');
+        if (welcomeElement) {
+          welcomeElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
   }
 }
 </script>
 
 <style scoped>
-.welcome {
-  color: white;
+.welcome, .description {
+  color: #f3f3f3;
   position: absolute;
   top: 50%;
   left: 50%;

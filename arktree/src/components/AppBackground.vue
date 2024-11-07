@@ -1,6 +1,8 @@
 <template>
   <div ref="container" class="particle-container">
     <!-- Adicionando a camada do GIF aqui -->
+    <div class="overlay-gif"></div>
+
   </div>
 </template>
 
@@ -20,7 +22,7 @@ export default {
   },
   methods: {
     initScene() {
-      const maxVisibleParticles = 10000; // Limite máximo de partículas visíveis
+      const maxVisibleParticles = window.innerWidth < 600 ? 500 : 10000;
       this.scene = new THREE.Scene();
       this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
       this.renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -37,12 +39,12 @@ export default {
 
     createParticles(maxVisibleParticles) {
       for (let i = 0; i < maxVisibleParticles; i++) {
-        const particleGeometry = new THREE.CircleGeometry(0.1, 5); // a geometria diretamente aqui
+        const particleGeometry = new THREE.CircleGeometry(0.1, 5);
         const particleMaterial = new THREE.MeshBasicMaterial({
           color: 0x008000,
           transparent: true,
           opacity: 0.7
-        }); // Criando o material diretamente aqui
+        });
 
         const particle = new THREE.Mesh(particleGeometry, particleMaterial);
         this.resetParticlePosition(particle);
@@ -77,7 +79,7 @@ export default {
       const mouseX = (event.clientX / window.innerWidth) * 500 - 9;
       const mouseY = (event.clientY / window.innerHeight) * 250 + 1;
 
-      // Movimentação das partículas em relação ao movimento do mouse
+      
       for (let i = 0; i < this.particles.length; i++) {
         const dx = this.particles[i].position.x - mouseX;
         const dy = this.particles[i].position.y - mouseY;
@@ -90,6 +92,7 @@ export default {
         }
       }
 
+      
       this.updateBackgroundPosition(mouseX, mouseY);
     },
 
@@ -129,9 +132,9 @@ export default {
 }
 
 .overlay-gif {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: absolute; /* Fixado dentro do container */
+  top: 50%;           /* Centraliza verticalmente */
+  left: 50%;          /* Centraliza horizontalmente */
   width: 10%;
   height: 150%;
   background-image: url('@/assets/images/borboletas.gif');
@@ -141,5 +144,7 @@ export default {
   opacity: 0.7;
   pointer-events: none;
   z-index: 2;
+  transform: translate(-50%, -50%); /* Garantir que fique centralizado */
 }
+
 </style>
