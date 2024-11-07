@@ -3,7 +3,7 @@
     <!-- Spinner de Carregamento -->
     <div v-if="isLoading" class="spinner">
       <div class="loader"></div>
-      <p class="loading-text"> Carregando...</p>
+      <p class="loading-text"> loading...</p>
     </div>
 
     <!-- Seus Componentes -->
