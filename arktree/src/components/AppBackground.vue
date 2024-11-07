@@ -1,7 +1,6 @@
 <template>
   <div ref="container" class="particle-container">
-    <!-- Adicionando a camada do GIF aqui -->
-    <div class="overlay-gif"></div>
+    <!--<div class="overlay-gif"></div> -->
 
   </div>
 </template>
@@ -14,10 +13,12 @@ export default {
   mounted() {
     this.initScene();
     window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('touchmove', this.onMouseMove);
     window.addEventListener('resize', this.handleResize);
   },
   unmounted() {
     window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('touchmove', this.onMouseMove);
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
@@ -43,7 +44,9 @@ export default {
         const particleMaterial = new THREE.MeshBasicMaterial({
           color: 0x008000,
           transparent: true,
-          opacity: 0.7
+          opacity: 0.8,
+          blending: THREE.AdditiveBlending
+
         });
 
         const particle = new THREE.Mesh(particleGeometry, particleMaterial);
@@ -78,22 +81,18 @@ export default {
     onMouseMove(event) {
       const mouseX = (event.clientX / window.innerWidth) * 500 - 9;
       const mouseY = (event.clientY / window.innerHeight) * 250 + 1;
-
       
-      for (let i = 0; i < this.particles.length; i++) {
-        const dx = this.particles[i].position.x - mouseX;
-        const dy = this.particles[i].position.y - mouseY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 20) {
-          const repulsionFactor = 0.1;
-          this.particles[i].position.x += dx * repulsionFactor;
-          this.particles[i].position.y += dy * repulsionFactor;
-        }
-      }
-
-      
+      this.updateParticlePositions(mouseX, mouseY);
       this.updateBackgroundPosition(mouseX, mouseY);
+    },
+
+    onTouchMove(event) {
+      const touch = event.touches[0]; 
+      const touchX = (touch.clientX / window.innerWidth) * 500 - 9;
+      const touchY = (touch.clientY / window.innerHeight) * 250 + 1;
+      
+      this.updateParticlePositions(touchX, touchY);
+      this.updateBackgroundPosition(touchX, touchY);
     },
 
     updateBackgroundPosition(mouseX, mouseY) {
@@ -132,9 +131,9 @@ export default {
 }
 
 .overlay-gif {
-  position: absolute; /* Fixado dentro do container */
-  top: 50%;           /* Centraliza verticalmente */
-  left: 50%;          /* Centraliza horizontalmente */
+  position: absolute; 
+  top: 50%;           
+  left: 50%;          
   width: 10%;
   height: 150%;
   background-image: url('@/assets/images/borboletas.gif');
@@ -144,7 +143,7 @@ export default {
   opacity: 0.7;
   pointer-events: none;
   z-index: 2;
-  transform: translate(-50%, -50%); /* Garantir que fique centralizado */
+  transform: translate(-50%, -50%); 
 }
 
 </style>
