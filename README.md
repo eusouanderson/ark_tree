@@ -1,4 +1,4 @@
-# 🌍 Projeto ArkTree - Vue.js + Three.js
+# 🌍 ArkTree 
 
 ## Descrição
 
