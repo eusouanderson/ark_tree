@@ -1,4 +1,5 @@
 <template>
+  
   <div>
     <!-- Spinner de Carregamento -->
     <div v-if="isLoading" class="spinner">
@@ -24,15 +25,17 @@
 
 <script>
 import AppBackground from '../components/AppBackground.vue';
-import AppWelcome from '../components/titles/AppWelcome.vue';
-import AppDescription from '../components/titles/AppDescription.vue';
+import AppWelcome from '../components/text/Welcome.vue';
+import AppDescription from '../components/text/Description.vue';
+
 
 export default {
   name: 'App',
   components: {
     AppBackground,
     AppWelcome,
-    AppDescription
+    AppDescription,
+
   },
   data() {
     return {

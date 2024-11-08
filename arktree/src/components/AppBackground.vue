@@ -1,8 +1,5 @@
 <template>
-  <div ref="container" class="particle-container">
-    <!--<div class="overlay-gif"></div> -->
-
-  </div>
+  <div ref="container" class="particle-container"></div>
 </template>
 
 <script>
@@ -12,8 +9,8 @@ export default {
   name: 'AppBackground',
   mounted() {
     this.initScene();
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('touchmove', this.onMouseMove);
+    window.addEventListener('mousemove', this.onMouseMove, { passive: true });
+    window.addEventListener('touchmove', this.onMouseMove, { passive: true });
     window.addEventListener('resize', this.handleResize);
   },
   unmounted() {
@@ -23,54 +20,54 @@ export default {
   },
   methods: {
     initScene() {
-      const maxVisibleParticles = window.innerWidth < 600 ? 500 : 10000;
+      const maxVisibleParticles = window.innerWidth < 600 ? 500 : 1000;
       this.scene = new THREE.Scene();
       this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
       this.renderer = new THREE.WebGLRenderer({ alpha: true });
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.$refs.container.appendChild(this.renderer.domElement);
 
+      // Reutilizando a geometria para todas as partículas
+      const particleGeometry = new THREE.CircleGeometry(0.1, 5);
+      const particleMaterial = new THREE.MeshBasicMaterial({
+        color: 0x008000,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+      });
+
       this.particles = [];
-      this.createParticles(maxVisibleParticles);
-
-      this.camera.position.z = 5;
-
-      this.animateParticles();
-    },
-
-    createParticles(maxVisibleParticles) {
       for (let i = 0; i < maxVisibleParticles; i++) {
-        const particleGeometry = new THREE.CircleGeometry(0.1, 5);
-        const particleMaterial = new THREE.MeshBasicMaterial({
-          color: 0x008000,
-          transparent: true,
-          opacity: 0.8,
-          blending: THREE.AdditiveBlending
-
-        });
-
         const particle = new THREE.Mesh(particleGeometry, particleMaterial);
         this.resetParticlePosition(particle);
         this.particles.push(particle);
         this.scene.add(particle);
       }
+
+      this.camera.position.z = 5;
+      this.animateParticles();
     },
 
     resetParticlePosition(particle) {
-      particle.position.x = Math.random() * window.innerWidth - window.innerWidth / 2;
-      particle.position.y = Math.random() * window.innerHeight - window.innerHeight / 2;
-      particle.position.z = Math.random() * 150 - 50;
+      particle.position.set(
+        Math.random() * window.innerWidth - window.innerWidth / 2,
+        Math.random() * window.innerHeight - window.innerHeight / 2,
+        Math.random() * 150 - 50
+      );
+      particle.velocity = new THREE.Vector3(0.1, 0.1, 0.5);
     },
 
     animateParticles() {
       const animate = () => {
-        for (let i = 0; i < this.particles.length; i++) {
-          this.particles[i].position.y -= 0.10;
+        this.particles.forEach(particle => {
+          particle.velocity.y -= 0.01;
+          particle.position.x += (Math.random() - 0.5) * 0.1;
+          particle.position.y += particle.velocity.y;
 
-          if (this.particles[i].position.y < -window.innerHeight / 2) {
-            this.particles[i].position.y = window.innerHeight / 2;
+          if (particle.position.y < -window.innerHeight / 2) {
+            this.resetParticlePosition(particle);
           }
-        }
+        });
 
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(animate);
@@ -79,25 +76,19 @@ export default {
     },
 
     onMouseMove(event) {
-      const mouseX = (event.clientX / window.innerWidth) * 500 - 9;
-      const mouseY = (event.clientY / window.innerHeight) * 250 + 1;
-      
-      this.updateParticlePositions(mouseX, mouseY);
-      this.updateBackgroundPosition(mouseX, mouseY);
-    },
+      const clientX = event.clientX || (event.touches && event.touches[0].clientX);
+      const clientY = event.clientY || (event.touches && event.touches[0].clientY);
+      const mouseX = (clientX / window.innerWidth) * 500 - 9;
+      const mouseY = (clientY / window.innerHeight) * 250 + 1;
 
-    onTouchMove(event) {
-      const touch = event.touches[0]; 
-      const touchX = (touch.clientX / window.innerWidth) * 500 - 9;
-      const touchY = (touch.clientY / window.innerHeight) * 250 + 1;
-      
-      this.updateParticlePositions(touchX, touchY);
-      this.updateBackgroundPosition(touchX, touchY);
+      this.updateBackgroundPosition(mouseX, mouseY);
     },
 
     updateBackgroundPosition(mouseX, mouseY) {
       const container = this.$refs.container;
-      container.style.backgroundPosition = `${50 + mouseX * 0.10}% ${50 + mouseY * 0.1}%`;
+      if (container) {
+        container.style.backgroundPosition = `${50 + mouseX * 0.10}% ${50 + mouseY * 0.1}%`;
+      }
     },
 
     handleResize() {
@@ -129,21 +120,4 @@ export default {
   transition: background-position 0.2s ease-out;
   z-index: 1;
 }
-
-.overlay-gif {
-  position: absolute; 
-  top: 50%;           
-  left: 50%;          
-  width: 10%;
-  height: 150%;
-  background-image: url('@/assets/images/borboletas.gif');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 2;
-  transform: translate(-50%, -50%); 
-}
-
 </style>
