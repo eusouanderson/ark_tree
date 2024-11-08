@@ -52,7 +52,7 @@ Através da animação de partículas e da interatividade, buscamos transmitir a
 ## Estrutura do Projeto
 
 - **src/components**: Contém os componentes Vue.js utilizados no projeto.
-  - `AppBackground.vue`: Componente responsável por renderizar o fundo e as partículas animadas.
+  - `AppFlorest.vue`: Componente responsável por renderizar o fundo e as partículas animadas.
 - **src/assets**: Imagens e arquivos utilizados no projeto.
 - **public**: Arquivos públicos, como o `index.html`.
 

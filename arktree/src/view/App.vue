@@ -1,5 +1,4 @@
 <template>
-  
   <div>
     <!-- Spinner de Carregamento -->
     <div v-if="isLoading" class="spinner">
@@ -13,42 +12,61 @@
         <AppWelcome></AppWelcome>
       </div>
 
-      <div class="description" ref="description">
-        <AppDescription v-if="!showWelcome"></AppDescription>
+      <div class="description" ref="description" v-if="!showWelcome">
+        <AppDescription></AppDescription>
       </div>
+      
+      <!-- Pagina Florest -->
+      <AppFlorest v-if="currentPage === 1"></AppFlorest>
+      <!-- Pagina Snow -->
+      <AppSnow v-if="currentPage === 2"></AppSnow>
 
-      <AppBackground></AppBackground>
+      <!-- Botões de Navegação -->
+      <div class="nav-buttons">
+        <button
+          v-if="currentPage === 2"
+          @click="goToFirstPage"
+          class="nav-button back-button"
+        >
+          <span class="arrow">← </span>Back
+        </button>
+        <button
+          v-if="currentPage === 1"
+          @click="goToNextPage"
+          class="nav-button next-button"
+        >
+          Next <span class="arrow">→</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import AppBackground from '../components/AppBackground.vue';
 import AppWelcome from '../components/text/Welcome.vue';
 import AppDescription from '../components/text/Description.vue';
-
+import AppSnow from './pages/AppSnow.vue';
+import AppFlorest from './pages/AppFlorest.vue';
 
 export default {
   name: 'App',
   components: {
-    AppBackground,
+    AppFlorest,
     AppWelcome,
     AppDescription,
-
+    AppSnow
   },
   data() {
     return {
       isLoading: true, // Variável de controle do spinner
       showWelcome: true, // Controle de exibição do AppWelcome
-      lastScrollY: 0, // Para armazenar a última posição do scroll
+      currentPage: 1, // Página atual (1 = Florest, 2 = Snow)
     };
   },
   mounted() {
-    // Simulação de um tempo de carregamento ou substitua por um evento real
     setTimeout(() => {
       this.isLoading = false; // Esconde o spinner após o tempo de carregamento
-    }, 2000); // 2 segundos para o exemplo, ajuste conforme necessário
+    }, 2000);
 
     // Adiciona o evento de scroll
     window.addEventListener("wheel", this.handleScroll);
@@ -58,20 +76,25 @@ export default {
     window.removeEventListener("wheel", this.handleScroll);
   },
   methods: {
+    goToNextPage() {
+      this.currentPage = 2; // Avança para a página Snow
+    },
+    goToFirstPage() {
+      this.currentPage = 1; // Volta para a página Florest
+    },
     handleScroll(event) {
-      // Detecta a direção do scroll (deltaY positivo é para baixo)
-      if (event.deltaY > 0) {
+      // Detecta a direção do scroll
+      if (event.deltaY > 0 && this.showWelcome) {
         // Rolou para baixo, navega para a descrição e desativa o AppWelcome
         this.scrollToDescription();
-        this.showWelcome = false; // Desativa o AppWelcome
-      } else {
+        this.showWelcome = false;
+      } else if (event.deltaY < 0 && !this.showWelcome) {
         // Rolou para cima, retorna para o AppWelcome
         this.scrollToWelcome();
-        this.showWelcome = true; // Ativa o AppWelcome
+        this.showWelcome = true;
       }
     },
     scrollToDescription() {
-      // Garante que a referência esteja acessível após o DOM ser atualizado
       this.$nextTick(() => {
         const descriptionElement = this.$refs.description;
         if (descriptionElement) {
@@ -80,7 +103,6 @@ export default {
       });
     },
     scrollToWelcome() {
-      // Garante que a referência esteja acessível após o DOM ser atualizado
       this.$nextTick(() => {
         const welcomeElement = this.$el.querySelector('.welcome');
         if (welcomeElement) {
@@ -89,11 +111,12 @@ export default {
       });
     }
   }
-}
+};
 </script>
 
 <style scoped>
-.welcome, .description {
+.welcome,
+.description {
   color: #f3f3f3;
   position: absolute;
   top: 50%;
@@ -112,34 +135,77 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /* Alinha o texto abaixo do spinner */
+  flex-direction: column;
 }
 
 .loader {
   border: 5px solid #f3f3f3;
   border-top: 5px solid #0b1d29;
   border-radius: 50%;
-  width: 30px; /* Aumenta o tamanho do spinner */
-  height: 30px; /* Aumenta o tamanho do spinner */
-  animation: spin 1s linear infinite; /* Acelera a animação */
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
 }
 
 .loading-text {
   margin-top: 20px;
-  font-size: 24px; /* Aumenta o tamanho da fonte */
-  font-weight: 600; /* Torna o texto mais ousado */
-  color: #070a0d; /* Cor elegante para o texto */
-  letter-spacing: 1px; /* Espaçamento entre as letras */
-  animation: fadeIn 1.5s ease-in-out; /* Animação suave para o texto */
+  font-size: 24px;
+  font-weight: 600;
+  color: #070a0d;
+  letter-spacing: 1px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.nav-buttons {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 3; /* Assegura que os botões fiquem sobre os outros elementos */
+}
+
+.nav-button {
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.421);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.nav-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.arrow {
+  font-size: 18px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
