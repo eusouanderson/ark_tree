@@ -20,17 +20,17 @@ export default {
   },
   methods: {
     initScene() {
-      const maxVisibleParticles = 5000;//window.innerWidth < 600 ? 500 : 1000;
+      const maxVisibleParticles = 50000; // Quantidade de partículas visíveis
       this.scene = new THREE.Scene();
       this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
       this.renderer = new THREE.WebGLRenderer({ alpha: true });
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.$refs.container.appendChild(this.renderer.domElement);
 
-      // Reutilizando a mesma geometria e material para as partículas
-      const particleGeometry = new THREE.CircleGeometry(0.1, 5);
+      // Geometria e material para as partículas
+      const particleGeometry = new THREE.CircleGeometry(0.1, 10);
       const particleMaterial = new THREE.MeshBasicMaterial({
-        color: 0xB0C4DE,
+        color: 0xF0F8FF,
         transparent: true,
         opacity: 1.0,
         blending: THREE.AdditiveBlending
@@ -50,22 +50,21 @@ export default {
 
     resetParticlePosition(particle) {
       particle.position.set(
-        Math.random() * window.innerWidth - window.innerWidth / 2,
-        Math.random() * window.innerHeight - window.innerHeight / 2,
-        Math.random() * 150 - 50
+        Math.random() * window.innerWidth - window.innerWidth / 2, // Posição aleatória no eixo X
+        Math.random() * window.innerHeight - window.innerHeight / 2, // Posição aleatória no eixo Y
+        Math.random() * 150 - 50 // Posição aleatória no eixo Z
       );
-      particle.velocity = new THREE.Vector3(0.1, 0.1, 0.5);
+      particle.velocity = new THREE.Vector3(0.1, 0.1, 0.5); // Velocidade inicial
     },
 
     animateParticles() {
       const animate = () => {
         this.particles.forEach(particle => {
-          particle.velocity.y -= 0.01;
-          particle.position.x += (Math.random() - 0.5) * 0.1;
-          particle.position.y += particle.velocity.y;
+          particle.velocity.y -= 0.50; // Gravidade para fazer as partículas caírem
+          particle.position.x += 0.50; // Movimentação das partículas para a direita (vento)
 
-          if (particle.position.y < -window.innerHeight / 2) {
-            this.resetParticlePosition(particle);
+          if (particle.position.x > window.innerWidth / 2) {
+            this.resetParticlePosition(particle); // Reinicia a posição se ultrapassar a tela
           }
         });
 
@@ -106,6 +105,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .particle-container {
   position: absolute;
@@ -114,7 +114,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-image: url('@/assets/images/florest-background.webp');
+  background-image: url('@/assets/images/desert-background.webp');
   background-size: cover;
   background-position: center;
   transition: background-position 0.2s ease-out;

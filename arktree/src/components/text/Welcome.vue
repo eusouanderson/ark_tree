@@ -12,3 +12,11 @@ export default {
 }
 
 </script>
+
+
+<style scoped>
+.welcome {
+    text-align: center;
+    padding: 10px;
+}
+</style>

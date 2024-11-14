@@ -3,7 +3,7 @@
     <!-- Spinner de Carregamento -->
     <div v-if="isLoading" class="spinner">
       <div class="loader"></div>
-      <p class="loading-text"> loading...</p>
+      <p class="loading-text">loading...</p>
     </div>
 
     <!-- Seus Componentes -->
@@ -20,9 +20,12 @@
       <AppFlorest v-if="currentPage === 1"></AppFlorest>
       <!-- Pagina Snow -->
       <AppSnow v-if="currentPage === 2"></AppSnow>
-
+      <!-- Pagina Desert -->
+      <AppDesert v-if="currentPage === 3"></AppDesert>
+      
       <!-- Botões de Navegação -->
       <div class="nav-buttons">
+        <!-- Botão "Back" para voltar para Florest -->
         <button
           v-if="currentPage === 2"
           @click="goToFirstPage"
@@ -31,12 +34,31 @@
           <span class="arrow">← </span>Back
         </button>
         <button
+          v-if="currentPage === 3"
+          @click="goToSecondPage"
+          class="nav-button back-button"
+        >
+          <span class="arrow">← </span>Back
+        </button>
+        
+        <!-- Botão "Next" para ir para Snow -->
+        <button
           v-if="currentPage === 1"
           @click="goToNextPage"
           class="nav-button next-button"
         >
           Next <span class="arrow">→</span>
         </button>
+        
+        <!-- Botão "Next" para ir para Desert -->
+        <button
+          v-if="currentPage === 2"
+          @click="goToThirdPage"
+          class="nav-button next-button"
+        >
+          Next <span class="arrow">→</span>
+        </button>
+        
       </div>
     </div>
   </div>
@@ -47,6 +69,7 @@ import AppWelcome from '../components/text/Welcome.vue';
 import AppDescription from '../components/text/Description.vue';
 import AppSnow from './pages/AppSnow.vue';
 import AppFlorest from './pages/AppFlorest.vue';
+import AppDesert from './pages/AppDesert.vue';
 
 export default {
   name: 'App',
@@ -54,13 +77,14 @@ export default {
     AppFlorest,
     AppWelcome,
     AppDescription,
-    AppSnow
+    AppSnow,
+    AppDesert
   },
   data() {
     return {
       isLoading: true, // Variável de controle do spinner
       showWelcome: true, // Controle de exibição do AppWelcome
-      currentPage: 1, // Página atual (1 = Florest, 2 = Snow)
+      currentPage: 1, // Página atual (1 = Florest, 2 = Snow, 3 = Desert)
     };
   },
   mounted() {
@@ -78,6 +102,12 @@ export default {
   methods: {
     goToNextPage() {
       this.currentPage = 2; // Avança para a página Snow
+    },
+    goToSecondPage() {
+      this.currentPage = 1; // Volta para a página Florest
+    },
+    goToThirdPage() {
+      this.currentPage = 3; // Avança para a página Desert
     },
     goToFirstPage() {
       this.currentPage = 1; // Volta para a página Florest
