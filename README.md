@@ -1,90 +1,90 @@
-# 🌍 ArkTree 
+# 🌍 ArkTree
 
-## Descrição
+## Description
 
-Este projeto é uma experiência interativa criada para sensibilizar as pessoas sobre a importância de cuidar do nosso planeta. Utilizando **Vue.js** e **Three.js**, o projeto cria uma visualização imersiva sobre o meio ambiente, explorando questões relacionadas à preservação da natureza e os impactos ambientais que enfrentamos.
+This project is an interactive experience designed to raise awareness about the importance of taking care of our planet. Using **Vue.js** and **Three.js**, it creates an immersive visualization of the environment, exploring issues related to nature conservation and the environmental impacts we face.
 
-Através da animação de partículas e da interatividade, buscamos transmitir a mensagem de como pequenas ações podem fazer uma grande diferença para o futuro do nosso planeta.
+Through particle animation and interactivity, we aim to convey the message that small actions can make a big difference for the future of our planet.
 
-## Funcionalidades
+## Features
 
-- **Animações de Partículas**: Partículas animadas em 3D simulam o movimento do ar e da natureza, simbolizando a necessidade de preservar o meio ambiente.
-- **Interatividade com o Mouse**: O projeto responde ao movimento do mouse, criando uma sensação imersiva de controle sobre o cenário.
-- **Imagem de Fundo e GIF**: Uma camada de fundo com uma imagem e um GIF animado de borboletas, representando a vida selvagem e a importância da biodiversidade.
+- **Particle Animations**: 3D animated particles simulate air and nature movement, symbolizing the need to preserve the environment.
+- **Mouse Interactivity**: The project responds to mouse movement, creating an immersive sense of control over the scene.
+- **Background Image and GIF**: A background layer with an image and an animated butterfly GIF, representing wildlife and the importance of biodiversity.
 
-## Tecnologias Usadas
+## Technologies Used
 
-- **Vue.js**: Framework JavaScript progressivo para a construção da interface de usuário.
-- **Three.js**: Biblioteca JavaScript que permite criar gráficos 3D no navegador.
-- **CSS**: Estilização da interface com foco na responsividade e interação.
+- **Vue.js**: A progressive JavaScript framework for building user interfaces.
+- **Three.js**: A JavaScript library for creating 3D graphics in the browser.
+- **CSS**: Interface styling focused on responsiveness and interaction.
 
-## Como Rodar o Projeto
+## How to Run the Project
 
-1. **Clonar o repositório**:
+1. **Clone the repository**:
     ```bash
-    git clone https://github.com/seuusuario/meu-projeto-meio-ambiente.git
+    git clone https://github.com/yourusername/environment-project.git
     ```
 
-2. **Instalar as dependências**:
-    Navegue até o diretório do projeto e instale as dependências usando o **npm** ou **yarn**:
+2. **Install dependencies**:
+    Navigate to the project directory and install dependencies using **npm** or **yarn**:
     ```bash
-    cd meu-projeto-meio-ambiente
+    cd environment-project
     npm install
     ```
-    ou
+    or
     ```bash
     yarn install
     ```
 
-3. **Rodar o servidor de desenvolvimento**:
-    Após a instalação das dependências, você pode rodar o servidor de desenvolvimento com o comando:
+3. **Run the development server**:
+    After installing the dependencies, start the development server with the command:
     ```bash
     npm run serve
     ```
-    ou
+    or
     ```bash
     yarn serve
     ```
 
-4. **Acessar o projeto**:
-    O projeto estará disponível em `http://localhost:8080/`.
+4. **Access the project**:
+    The project will be available at `http://localhost:8080/`.
 
-## Estrutura do Projeto
+## Project Structure
 
-- **src/components**: Contém os componentes Vue.js utilizados no projeto.
-  - `AppFlorest.vue`: Componente responsável por renderizar o fundo e as partículas animadas.
-- **src/assets**: Imagens e arquivos utilizados no projeto.
-- **public**: Arquivos públicos, como o `index.html`.
+- **src/components**: Contains the Vue.js components used in the project.
+  - `AppForest.vue`: Component responsible for rendering the background and animated particles.
+- **src/assets**: Images and files used in the project.
+- **public**: Public files, such as `index.html`.
 
-## Como Funciona
+## How It Works
 
-1. **Vue.js** gerencia a estrutura do projeto e a interação do usuário.
-2. **Three.js** é usado para renderizar as partículas 3D no cenário e permitir a movimentação dinâmica delas.
-3. A animação das partículas é baseada no movimento do mouse, proporcionando uma experiência imersiva para o usuário.
-4. O projeto também é responsivo, adaptando-se a diferentes tamanhos de tela, com o fundo ajustando-se ao tamanho da janela.
+1. **Vue.js** manages the project structure and user interaction.
+2. **Three.js** renders the 3D particles in the scene and enables their dynamic movement.
+3. Particle animation is based on mouse movement, providing an immersive experience for the user.
+4. The project is also responsive, adapting to different screen sizes, with the background adjusting to the window size.
 
-## Contribuindo
+## Contributing
 
-Se você deseja contribuir para o projeto, siga os seguintes passos:
+If you’d like to contribute to the project, please follow these steps:
 
-1. **Fork o repositório**.
-2. **Crie uma nova branch** (`git checkout -b feature/nova-funcionalidade`).
-3. **Faça suas alterações**.
-4. **Commit as alterações** (`git commit -am 'Adiciona nova funcionalidade'`).
-5. **Push para a branch** (`git push origin feature/nova-funcionalidade`).
-6. **Abra um Pull Request**.
+1. **Fork the repository**.
+2. **Create a new branch** (`git checkout -b feature/new-feature`).
+3. **Make your changes**.
+4. **Commit your changes** (`git commit -am 'Add new feature'`).
+5. **Push to the branch** (`git push origin feature/new-feature`).
+6. **Open a Pull Request**.
 
-## Licença
+## License
 
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-## Agradecimentos
+## Acknowledgments
 
-Agradecemos a todos os envolvidos no desenvolvimento e na criação de soluções para conscientizar sobre a preservação ambiental!
+We thank everyone involved in developing and creating solutions to raise awareness about environmental preservation!
 
-## Contato
+## Contact
 
-Se você tiver alguma dúvida ou sugestão sobre este projeto, sinta-se à vontade para me contatar:
+If you have any questions or suggestions about this project, feel free to contact me:
 
-- GitHub: [@seuusuario](https://github.com/seuusuario)
-- Email: [seuemail@dominio.com](mailto:seuemail@dominio.com)
+- GitHub: [@yourusername](https://github.com/yourusername)
+- Email: [youremail@domain.com](mailto:youremail@domain.com)
